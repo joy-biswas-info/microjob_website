@@ -13,6 +13,7 @@ export const register = async (req, res, next) => {
       ...req.body,
       password: hash,
     });
+    // console.log(newUser);
 
     await newUser.save();
     res.status(201).send("User Created successfully");

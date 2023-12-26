@@ -35,6 +35,9 @@ app.use("/api/orders", orderRoute);
 app.use("/api/conversation", conversationRoute);
 app.use("/api/messages", messageRoute);
 app.use("/api/reviews", reviewRoute);
+app.get("/", (req, res) => {
+  res.json("Server is working");
+});
 
 app.use((err, req, res, next) => {
   const errorStatus = err.status || 500;

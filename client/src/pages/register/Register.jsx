@@ -35,17 +35,13 @@ const Register = () => {
     setLoading(true);
     const url = await upload(file);
     try {
-      // await axios.post("", {
-      //   ...user,
-      //   img: url,
-      // });
-      const user2 = {
+      await axios.post("http://localhost:8800/api/auth/register", {
         ...user,
         img: url,
-      };
-      console.log(user2);
+      });
+      // naviget("/");
     } catch (error) {
-      console.log("Something went wrong");
+      console.log(error);
     }
     setLoading(false);
   };
@@ -78,6 +74,13 @@ const Register = () => {
                 type="password"
                 name="password"
                 id="password"
+                onChange={handleChange}
+              />
+              <label htmlFor="country">Country</label>
+              <input
+                type="country"
+                name="country"
+                id="country"
                 onChange={handleChange}
               />
               <label htmlFor="profile">Profile Picture</label>
