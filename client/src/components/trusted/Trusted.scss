@@ -1,0 +1,17 @@
+.trusted{
+    background-color:#F5F5F5;
+    .container{
+        height: 100px;
+        width: 1440px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+        h3{
+            color: #000;
+        }
+        img{
+            height: 50px;
+        }
+    }
+}

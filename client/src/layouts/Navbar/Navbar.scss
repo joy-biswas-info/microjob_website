@@ -1,0 +1,106 @@
+.navbar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #0f4528;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  transition: 0.3s all ease;
+  z-index: 9999;
+  &.active {
+    background-color: #fff;
+    color: #000;
+    box-shadow: 1px 1px 20px 1px #555;
+  }
+  .container {
+    width: 1440px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .logo {
+      font-size: 40px;
+      font-weight: 700;
+      .text {
+        color: #fff;
+        &.active {
+          color: #000;
+        }
+      }
+      .dot {
+        color: #9df9ce;
+      }
+    }
+    .links {
+      display: flex;
+      gap: 35px;
+      font-weight: 500;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #fff;
+      &.active {
+        color: #000;
+      }
+
+      button {
+        background-color: #fff;
+        border: 1px solid #c3c3c3;
+        padding: 10px 20px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all ease 0.2s;
+        border-radius: 5px;
+        color: #000;
+        &:hover {
+          background-color: #00cd6d;
+          color: #fff;
+        }
+      }
+      .user {
+        position: relative;
+        display: flex;
+        align-items: center;
+        img {
+          width: 32px;
+          height: 32px;
+          border-radius: 50%;
+          object-fit: cover;
+          cursor: pointer;
+        }
+        .options {
+          display: flex;
+          flex-direction: column;
+          position: absolute;
+          background-color: #fff;
+          border-radius: 5px;
+          width: 200px;
+          top: 60px;
+          a {
+            color: #000;
+            padding: 10px 15px;
+            &:hover {
+              background-color: rgba(128, 128, 128, 0.142);
+            }
+          }
+        }
+      }
+    }
+  }
+  hr {
+    width: 100%;
+    color: #000;
+    height: 0;
+    border: 1px solid lightgray;
+  }
+  .menu {
+    width: 1440px;
+    display: none;
+    padding: 8px 0;
+    &.active {
+      display: flex;
+      justify-content: space-between;
+      color: #000;
+    }
+  }
+}
