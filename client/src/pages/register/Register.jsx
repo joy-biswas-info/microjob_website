@@ -3,9 +3,12 @@ import "./Register.scss";
 import upload from "../../utils/upload";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import Loading from "../../components/Loading/Loading";
 
 const Register = () => {
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isComplete, setIsCompleted] = useState(false);
+  const [isError, setIsError] = useState(false);
   const [file, setFile] = useState(null);
   const naviget = useNavigate();
   const [user, setUser] = useState({
@@ -32,18 +35,26 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
-    const url = await upload(file);
+
     try {
+      setIsLoading(true);
+      if (file) {
+        var url = await upload(file);
+      }
       await axios.post("http://localhost:8800/api/auth/register", {
         ...user,
         img: url,
       });
-      // naviget("/");
+      setIsCompleted(true);
+      setTimeout(() => {
+        setIsLoading(false);
+        naviget("/");
+      }, 3000);
     } catch (error) {
       console.log(error);
+      setIsError(true);
+      setTimeout(() => {}, 2000);
     }
-    setLoading(false);
   };
 
   return (
@@ -83,16 +94,23 @@ const Register = () => {
                 id="country"
                 onChange={handleChange}
               />
-              <label htmlFor="profile">Profile Picture</label>
-              <input
-                type="file"
-                name="file"
-                id="file"
-                onChange={(e) => setFile(e.target.files[0])}
-              />
 
-              <button type="submit">Create Accout</button>
-              {loading && <p>Creating account...</p>}
+              <div className="file">
+                <div>
+                  <label htmlFor="profile">Profile Picture</label>
+                  <input
+                    type="file"
+                    name="file"
+                    id="file"
+                    onChange={(e) => setFile(e.target.files[0])}
+                  />
+                </div>
+                {file && <img src={URL.createObjectURL(file)} alt="" />}
+              </div>
+
+              <button disabled={isLoading ?? true} type="submit">
+                Create Accout
+              </button>
             </div>
             <div className="right">
               <h1>I want to become a seller</h1>
@@ -123,6 +141,26 @@ const Register = () => {
               ></textarea>
             </div>
           </form>
+          {isLoading && (
+            <div className="loading">
+              <Loading
+                loading={isLoading}
+                completed={isComplete}
+                isError={isError}
+              />
+              {isError && (
+                <button
+                  className="error"
+                  onClick={() => {
+                    setIsLoading(false);
+                    setIsError(false);
+                  }}
+                >
+                  Back
+                </button>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </div>
