@@ -19,7 +19,6 @@ const Loading = ({ loading, completed, isError }) => {
                 style={{ display: "block" }}
               ></div>
             </div>
-            <p>Successfully Done !!!</p>
           </>
         )}
         {isError && (

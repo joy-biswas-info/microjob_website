@@ -11,6 +11,7 @@ const Register = () => {
   const [isError, setIsError] = useState(false);
   const [file, setFile] = useState(null);
   const naviget = useNavigate();
+
   const [user, setUser] = useState({
     username: "",
     email: "",
@@ -41,7 +42,7 @@ const Register = () => {
       if (file) {
         var url = await upload(file);
       }
-      await axios.post("http://localhost:8800/api/auth/register", {
+      await axios.post("/auth/register", {
         ...user,
         img: url,
       });

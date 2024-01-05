@@ -1,11 +1,13 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./Navbar.scss";
 import { useEffect, useState } from "react";
+import newRequest from "../../utils/newRequest.js";
 
 const Navbar = () => {
   const [active, setActive] = useState(false);
   const [open, setOpen] = useState(false);
   const { pathname } = useLocation();
+  const navigate = useNavigate();
   const isActive = () => {
     window.scrollY > 0 ? setActive(true) : setActive(false);
   };
@@ -17,10 +19,16 @@ const Navbar = () => {
     };
   }, []);
 
-  const currentUser = {
-    userId: 1,
-    username: "Joy Biswas",
-    isSeller: true,
+  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+
+  const handelLogout = async () => {
+    try {
+      await newRequest.post("/auth/logout");
+      navigate("/login");
+    } catch (err) {
+      console.log(err);
+    }
+    localStorage.setItem("currentUser", null);
   };
 
   return (
@@ -31,26 +39,28 @@ const Navbar = () => {
             <span
               className={active || pathname !== "/" ? "text active" : "text"}
             >
-              Jiverr
+              Creatives
             </span>
           </Link>
           <span className="dot">.</span>
         </div>
         <div className={active || pathname !== "/" ? "links active" : "links"}>
-          <Link to="/gigs">Jiverr Business</Link>
+          <Link to="/gigs">Creatives Business</Link>
           <Link to="/gigs">Explore</Link>
           <span>English</span>
-          {!currentUser && <span>Sign In</span>}
+          {!currentUser && <Link to="/login">Sign In</Link>}
 
           {!currentUser?.isSeller && (
             <Link to="/register">Become a seller</Link>
           )}
-          {!currentUser?.userId && (
+
+          {!currentUser?.username && (
             <button>
               <Link to="/register">Join</Link>
             </button>
           )}
-          {currentUser?.userId && (
+
+          {currentUser?.username && (
             <div className="user" onClick={() => setOpen(!open)}>
               <img src="/images/man.png" alt="" height="50" />
 
@@ -68,6 +78,7 @@ const Navbar = () => {
                     <Link to="/orders">Order</Link>
                     <Link to="/messages">Messages</Link>
                     <Link to="orders">Orders</Link>
+                    <Link onClick={() => handelLogout()}>Log Out</Link>
                   </>
                 )}
               </div>
