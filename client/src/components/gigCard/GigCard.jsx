@@ -1,21 +1,40 @@
 /* eslint-disable react/prop-types */
 import { Link } from "react-router-dom";
 import "./GigCard.scss";
+import { useQuery } from "@tanstack/react-query";
+import newRequest from "../../utils/newRequest.js";
 
 const GigCard = ({ item }) => {
+  const { isPending, error, data } = useQuery({
+    queryKey: ["user"],
+    queryFn: () =>
+      newRequest.get(`/users/${item.userId}`).then((res) => {
+        return res.data;
+      }),
+  });
+
   return (
-    <Link to="/gig/123" className="link">
+    <Link to={`/gig/${item._id}`} className="link">
       <div className="gigCard">
-        <img src={item.img} alt="" />
+        <img src={item.cover} alt="" />
         <div className="info">
-          <div className="user">
-            <img src={item.pp} alt="" />
-            <span>{item.username}</span>
-          </div>
+          {isPending ? (
+            "Loading..."
+          ) : error ? (
+            "Something went wrong..."
+          ) : (
+            <div className="user">
+              <img src={data.img ? data.img : "images/noimg.png"} alt="" />
+              <span>{data.username}</span>
+            </div>
+          )}
           <p>{item.desc}</p>
           <div className="star">
             <img src="./images/star.png" alt="" />
-            <span>{item.star}</span>
+            <p>
+              {!isNaN(item.totalStar / item.starNumber) &&
+                Math.round(item.totalStar / item.starNumber)}
+            </p>
           </div>
         </div>
         <hr />

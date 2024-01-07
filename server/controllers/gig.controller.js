@@ -20,33 +20,11 @@ const createGig = async (req, res, next) => {
   }
 };
 
-//! All Gigs Of Seller
-const gigs = async (req, res, next) => {
-  if (!req.isSeller) {
-    return next(createError(403, "Only a seller can create a gig"));
-  }
-
-  try {
-    const gigs = await Gig.find({
-      userId: req.userId,
-    });
-    if (!gigs) {
-      res.status(200).json("You have no gig");
-    }
-    res.status(200).json(gigs);
-  } catch (err) {
-    next(err);
-  }
-};
-
 //! Single Gig
 //============
 const singleGig = async (req, res, next) => {
   try {
     const gig = await Gig.findById(req.params.id);
-    if (!gig) {
-      return next(createError(404, "No gig found!"));
-    }
 
     res.status(200).json(gig);
   } catch (err) {
@@ -74,6 +52,29 @@ const deleteGig = async (req, res, next) => {
     next(err);
   }
 };
+//! All Gigs
+const gigs = async (req, res, next) => {
+  const q = req.query;
 
+  const filters = {
+    ...(q.userId && { userId: q.userId }),
+    ...(q.cat && { cat: q.cat }),
+    ...((q.min || q.max) && {
+      price: {
+        ...(q.min && { $gte: q.min }),
+        ...(q.max && { $lte: q.max }),
+      },
+    }),
+    ...(q.search && { title: { $regex: q.search, $options: "i" } }),
+  };
+
+  try {
+    const gigs = await Gig.find(filters).sort({ [q.sort]: -1 });
+
+    res.status(200).json(gigs);
+  } catch (err) {
+    next(err);
+  }
+};
 //! Exporting All Functions
 export { createGig, gigs, singleGig, updateGig, deleteGig };

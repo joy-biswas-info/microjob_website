@@ -10,3 +10,11 @@ export const deleteUser = async (req, res) => {
   await User.findByIdAndDelete(req.params.id);
   res.status(200).send("User deleted !");
 };
+
+export const getUser = async (req, res) => {
+  const user = await User.findById(req.params?.id);
+
+  const { password, ...others } = user._doc;
+
+  res.status(200).send(others);
+};

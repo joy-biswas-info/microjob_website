@@ -1,15 +1,43 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import GigCard from "../../components/gigCard/gigCard.jsx";
-import { gigsData } from "../../data.js";
 import "./Gigs.scss";
+import { useQuery } from "@tanstack/react-query";
+import newRequest from "../../utils/newRequest.js";
+import { useLocation } from "react-router-dom";
 
 const Gigs = () => {
   const [sort, setSort] = useState("sales");
+  const minRef = useRef();
+  const maxRef = useRef();
+  let { search } = useLocation();
+  if (!search) {
+    search = "?";
+  }
 
-  const handleSortChange = (event) => {
-    const selectedSort = event.target.value;
-    setSort(selectedSort);
+  const { isPending, error, data, refetch } = useQuery({
+    queryKey: ["gigs"],
+    queryFn: () =>
+      newRequest
+        .get(
+          `/gigs${search}&min=${minRef.current.value}&max=${maxRef.current.value}&sort=${sort}`
+        )
+        .then((res) => {
+          return res.data;
+        }),
+  });
+
+  const reSort = (sort) => {
+    setSort(sort.target.value);
   };
+
+  const apply = (e) => {
+    e.preventDefault();
+    refetch();
+  };
+
+  useEffect(() => {
+    refetch();
+  }, [sort]);
 
   return (
     <div className="gigs">
@@ -22,10 +50,10 @@ const Gigs = () => {
         </p>
         <div className="option">
           <div className="left">
-            <form action="#">
+            <form onSubmit={apply}>
               <span>Budget : </span>
-              <input type="number" placeholder="Min" />
-              <input type="number" placeholder="Max" inputMode="numeric" />
+              <input type="number" placeholder="Min" ref={minRef} />
+              <input type="number" placeholder="Max" ref={maxRef} />
               <input type="submit" value="Apply" />
             </form>
           </div>
@@ -33,27 +61,23 @@ const Gigs = () => {
             <form action="#">
               <span>Sort By : </span>
 
-              <select
-                name="sort"
-                id="sort"
-                onChange={handleSortChange}
-                value={sort}
-              >
-                <option value="best-selling">Best selling</option>
-                <option value="new-seller">New Seller</option>
-                <option value="low-high">Price: Low to High</option>
-                <option value="high-low">Price: High to Low</option>
+              <select name="sort" id="sort" onChange={reSort}>
+                <option value="createdAt">Created At</option>
+                <option value="sales">Best selling</option>
+                <option value="price">Price</option>
               </select>
             </form>
           </div>
         </div>
         <div className="gig-count">
-          56,2345 <span>Services available</span>
+          {data ? data.length : "0"} <span>Services available</span>
         </div>
         <div className="gig-items">
-          {gigsData.map((gig) => (
-            <GigCard key={gig.id} item={gig} />
-          ))}
+          {isPending
+            ? "Loading"
+            : error
+            ? "Something went wrong"
+            : data?.map((gig) => <GigCard key={gig._id} item={gig} />)}
         </div>
       </div>
     </div>
