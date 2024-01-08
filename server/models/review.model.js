@@ -5,11 +5,11 @@ const reviewSchema = new Schema(
   {
     gigId: {
       type: String,
-      required,
+      required: true,
     },
     userId: {
       type: String,
-      required,
+      required: true,
     },
     star: {
       type: Number,
@@ -18,7 +18,7 @@ const reviewSchema = new Schema(
     },
     desc: {
       type: String,
-      required,
+      required: true,
     },
   },
   {
@@ -26,4 +26,4 @@ const reviewSchema = new Schema(
   }
 );
 
-export default mongoose.model("User", reviewSchema);
+export default mongoose.model("Review", reviewSchema);

@@ -4,6 +4,7 @@ import "./Gig.scss";
 import Carousel from "better-react-carousel";
 import { useParams } from "react-router-dom";
 import newRequest from "../../utils/newRequest.js";
+import Reviews from "../../components/reviews/reviews.jsx";
 
 const Gig = () => {
   const { id } = useParams();
@@ -58,7 +59,6 @@ const Gig = () => {
               ) : (
                 <span>{userData.username}</span>
               )}
-              {console.log(data?.totalStar)}
               {!isNaN(data.totalStar / data.starNumber) && (
                 <div className="stars">
                   {Array(Math.round(data.totalStar / data.starNumber))
@@ -114,7 +114,7 @@ const Gig = () => {
                 <div className="items">
                   <div className="item">
                     <span className="title">From</span>
-                    <span className="desc">{userData.country}</span>
+                    <span className="desc">{userData?.country}</span>
                   </div>
                   <div className="item">
                     <span className="title">Member since</span>
@@ -134,138 +134,10 @@ const Gig = () => {
                   </div>
                 </div>
                 <hr />
-                <p>{userData.desc}</p>
+                <p>{userData?.desc}</p>
               </div>
             </div>
-            <div className="reviews">
-              <h2>Reviews</h2>
-              <div className="item">
-                <div className="user">
-                  <img
-                    className="pp"
-                    src="https://images.pexels.com/photos/839586/pexels-photo-839586.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                    alt=""
-                  />
-                  <div className="info">
-                    <span>Garner David</span>
-                    <div className="country">
-                      <img
-                        src="https://fiverr-dev-res.cloudinary.com/general_assets/flags/1f1fa-1f1f8.png"
-                        alt=""
-                      />
-                      <span>United States</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="stars">
-                  <img src="/images/star.png" alt="" />
-                  <img src="/images/star.png" alt="" />
-                  <img src="/images/star.png" alt="" />
-                  <img src="/images/star.png" alt="" />
-                  <img src="/images/star.png" alt="" />
-                  <span>5</span>
-                </div>
-                <p>
-                  I just want to say that art_with_ai was the first, and after
-                  this, the only artist Ill be using on Fiverr. Communication
-                  was amazing, each and every day he sent me images that I was
-                  free to request changes to. They listened, understood, and
-                  delivered above and beyond my expectations. I absolutely
-                  recommend this gig, and know already that Ill be using it
-                  again very very soon
-                </p>
-                <div className="helpful">
-                  <span>Helpful?</span>
-                  <img src="/images/like.png" alt="" />
-                  <span>Yes</span>
-                  <img src="/images/dislike.png" alt="" />
-                  <span>No</span>
-                </div>
-              </div>
-              <hr />
-              <div className="item">
-                <div className="user">
-                  <img
-                    className="pp"
-                    src="https://images.pexels.com/photos/4124367/pexels-photo-4124367.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                    alt=""
-                  />
-                  <div className="info">
-                    <span>Sidney Owen</span>
-                    <div className="country">
-                      <img
-                        src="https://fiverr-dev-res.cloudinary.com/general_assets/flags/1f1e9-1f1ea.png"
-                        alt=""
-                      />
-                      <span>Germany</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="stars">
-                  <img src="/images/star.png" alt="" />
-                  <img src="/images/star.png" alt="" />
-                  <img src="/images/star.png" alt="" />
-                  <img src="/images/star.png" alt="" />
-                  <img src="/images/star.png" alt="" />
-                  <span>5</span>
-                </div>
-                <p>
-                  The designer took my photo for my book cover to the next
-                  level! Professionalism and ease of working with designer along
-                  with punctuality is above industry standards!! Whatever your
-                  project is, you need this designer!
-                </p>
-                <div className="helpful">
-                  <span>Helpful?</span>
-                  <img src="/images/like.png" alt="" />
-                  <span>Yes</span>
-                  <img src="/images/dislike.png" alt="" />
-                  <span>No</span>
-                </div>
-              </div>
-              <hr />
-              <div className="item">
-                <div className="user">
-                  <img
-                    className="pp"
-                    src="https://images.pexels.com/photos/842980/pexels-photo-842980.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                    alt=""
-                  />
-                  <div className="info">
-                    <span>Lyle Giles </span>
-                    <div className="country">
-                      <img
-                        src="https://fiverr-dev-res.cloudinary.com/general_assets/flags/1f1fa-1f1f8.png"
-                        alt=""
-                      />
-                      <span>United States</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="stars">
-                  <img src="/images/star.png" alt="" />
-                  <img src="/images/star.png" alt="" />
-                  <img src="/images/star.png" alt="" />
-                  <img src="/images/star.png" alt="" />
-                  <img src="/images/star.png" alt="" />
-                  <span>5</span>
-                </div>
-                <p>
-                  Amazing work! Communication was amazing, each and every day he
-                  sent me images that I was free to request changes to. They
-                  listened, understood, and delivered above and beyond my
-                  expectations. I absolutely recommend this gig, and know
-                  already that Ill be using it again very very soon
-                </p>
-                <div className="helpful">
-                  <span>Helpful?</span>
-                  <img src="/images/like.png" alt="" />
-                  <span>Yes</span>
-                  <img src="/images/dislike.png" alt="" />
-                  <span>No</span>
-                </div>
-              </div>
-            </div>
+            {data._id && <Reviews gigId={data._id} />}
           </div>
           <div className="right">
             <div className="price">
