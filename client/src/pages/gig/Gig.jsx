@@ -70,7 +70,7 @@ const Gig = () => {
                 </div>
               )}
             </div>
-            <div className="slider">
+            <div className="gig-slider">
               <Carousel cols={1} rows={1} gap={1}>
                 {data.Images.map((img) => (
                   <Carousel.Item key={img}>

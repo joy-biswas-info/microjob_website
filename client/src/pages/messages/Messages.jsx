@@ -52,9 +52,10 @@ const Messages = () => {
               {data?.map((c) => (
                 <tr
                   className={
-                    ((user.isSeller && !c.readBySeller) ||
-                      (!user.isSeller && !c.readByBuyer)) &&
-                    "active"
+                    (user.isSeller && !c.readBySeller) ||
+                    (!user.isSeller && !c.readByBuyer)
+                      ? "active"
+                      : ""
                   }
                   key={c._id}
                 >

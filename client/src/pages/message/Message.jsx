@@ -2,9 +2,18 @@ import { useParams } from "react-router-dom";
 import "./Message.scss";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import newRequest from "../../utils/newRequest.js";
+import NotificationSound from "/notification-sound.mp3";
+import { useRef } from "react";
 
 const Message = () => {
   const { id } = useParams();
+
+  const playAudio = () => {
+    const audio = new Audio(NotificationSound);
+    console.log("play Audio");
+    audio.play();
+  };
+
   const queryClient = useQueryClient();
   const user = JSON.parse(localStorage.getItem("currentUser"));
   const { isLoading, error, data } = useQuery({
@@ -14,6 +23,14 @@ const Message = () => {
         return res.data;
       }),
   });
+
+  if (
+    data?.map(
+      (m) => user.isSeller && m.readBySeller && !user.isSeller && !m.readByBuyer
+    )
+  ) {
+    playAudio();
+  }
 
   const mutation = useMutation({
     mutationFn: (message) => {
@@ -47,7 +64,7 @@ const Message = () => {
             </div>
             <hr />
             <div className="items">
-              {data.map((m) => (
+              {data?.map((m) => (
                 <div
                   className={m.userId === user._id ? "item owner" : "item"}
                   key={m._id}

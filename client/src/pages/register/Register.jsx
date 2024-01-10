@@ -2,8 +2,8 @@ import { useState } from "react";
 import "./Register.scss";
 import upload from "../../utils/upload";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import Loading from "../../components/Loading/Loading";
+import newRequest from "../../utils/newRequest.js";
 
 const Register = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -42,7 +42,7 @@ const Register = () => {
       if (file) {
         var url = await upload(file);
       }
-      await axios.post("/auth/register", {
+      await newRequest.post("/auth/register", {
         ...user,
         img: url,
       });
