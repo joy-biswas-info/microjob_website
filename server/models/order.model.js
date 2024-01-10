@@ -5,31 +5,32 @@ const orderSchema = new Schema(
   {
     gigId: {
       type: String,
-      required,
+      required: true,
     },
     buyerId: {
       type: String,
-      required,
+      required: true,
     },
     sellerId: {
       type: String,
-      required,
+      required: true,
     },
+    price: { type: String, required: true },
     img: {
       type: String,
       required: false,
     },
     title: {
       type: String,
-      required,
+      required: true,
     },
     isCompleted: {
       type: Boolean,
       default: false,
     },
     payment_intent: {
-        type: String,
-        required,
+      type: String,
+      required: true,
     },
   },
   {

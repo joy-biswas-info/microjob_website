@@ -26,9 +26,9 @@ const Reviews = ({ gigId }) => {
     e.preventDefault();
     const desc = e.target[0].value;
     const star = e.target[1].value;
-    mutation.mutate({ desc, star, gigId });
     e.target[0].value = "";
     e.target[1].value = 1;
+    mutation.mutate({ desc, star, gigId });
   };
   return (
     <div className="reviews">

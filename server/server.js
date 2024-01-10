@@ -32,7 +32,7 @@ app.use("/api/auth", authRoute);
 app.use("/api/users", userRoute);
 app.use("/api/gigs", gigRoute);
 app.use("/api/orders", orderRoute);
-app.use("/api/conversation", conversationRoute);
+app.use("/api/conversations", conversationRoute);
 app.use("/api/messages", messageRoute);
 app.use("/api/reviews", reviewRoute);
 app.get("/", (req, res) => {
@@ -42,6 +42,7 @@ app.get("/", (req, res) => {
 app.use((err, req, res, next) => {
   const errorStatus = err.status || 500;
   const errorMessage = err.message || "Something went wrong!";
+
   return res.status(errorStatus).send(errorMessage);
 });
 

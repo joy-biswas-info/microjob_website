@@ -3,13 +3,13 @@ const { Schema } = mongoose;
 
 const conversationSchema = new Schema(
   {
-    ConversationId: {
+    conversationId: {
       type: String,
-      required,
+      required: true,
     },
-    UserId: {
+    userId: {
       type: String,
-      required,
+      required: true,
     },
     message: {
       type: String,
@@ -21,4 +21,4 @@ const conversationSchema = new Schema(
   }
 );
 
-export default mongoose.model("Conversation", conversationSchema);
+export default mongoose.model("Message", conversationSchema);
